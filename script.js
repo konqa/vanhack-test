@@ -1,14 +1,23 @@
 function apply(id) {
   // check events user has applied for
-  let currentEvents = localStorage.getItem("events_applied")
+  let currentAppliedEvents = localStorage.getItem("events_applied")
     ? JSON.parse(localStorage.getItem("events_applied"))
     : [];
 
-  if (!currentEvents.includes(id)) {
+  if (!currentAppliedEvents.includes(id)) {
     // add new event ID to array
-    currentEvents.push(id);
+    currentAppliedEvents.push(id);
 
     // add to localstorage
-    localStorage.setItem("events_applied", JSON.stringify(currentEvents));
+    localStorage.setItem(
+      "events_applied",
+      JSON.stringify(currentAppliedEvents)
+    );
+
+    // hide apply button on specific event
+    document.querySelector(`#apply-btn-${id}`).style.display = "none";
+
+    // show applied div
+    document.querySelector(`#applied-${id}`).style.display = "flex";
   }
 }
