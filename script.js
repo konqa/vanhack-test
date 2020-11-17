@@ -1,3 +1,76 @@
+const events = [
+  {
+    id: 435,
+    title: "MeetUp",
+    date: "26 November 2020",
+    description: "text text",
+    image: "",
+  },
+  {
+    id: 420,
+    title: "Leap Recruiting Mission",
+    date: "29 November 2020",
+    description: "text text",
+    image: "",
+  },
+  {
+    id: 103,
+    title: "VanHackathon",
+    date: "2 December 2020",
+    description: "text text",
+    image: "",
+  },
+  {
+    id: 201,
+    title: "Premium-only Webinar",
+    date: "6 December 2020",
+    description: "text text",
+    image: "",
+  },
+  {
+    id: 88,
+    title: "Open Webinar",
+    date: "15 December 2020",
+    description: "text text",
+    image: "",
+  },
+];
+
+async function eventsData() {
+  // load events to page
+
+  let html = "";
+
+  if (events.length) {
+    await events.map((event, index) => {
+      html = `${html} 
+      <div class="event-card">
+        <div class="event-section-head"><img src="${event.title}" alt="Event image" /></div>
+        <div class="event-section-main">
+            <div class="event-title">${event.title}</div>
+            <div class="event-date">Date ${event.date}</div>
+            <div class="event-more">${event.description}</div>
+        </div>
+        <div class="event-section-footer">
+
+            <button class="vh-btn" onclick="apply(${event.id})" id="apply-btn-${event.id}">
+                Apply to attend
+            </button>
+            <div class="vh-applied" id="applied-${event.id}" style="display:none">Application sent</div>
+
+        </div>
+      </div>`;
+    });
+  } else {
+    html = "<div>:) No VanHack events found</div>";
+  }
+
+  // add html to events-block page section
+  document.querySelector(`#events-block`).innerHTML = html;
+}
+
+eventsData();
+
 let currentAppliedEvents = localStorage.getItem("events_applied")
   ? JSON.parse(localStorage.getItem("events_applied"))
   : [];
@@ -27,12 +100,6 @@ function apply(id) {
       JSON.stringify(currentAppliedEvents)
     );
 
-    // hide apply button on specific event
-    document.querySelector(`#apply-btn-${id}`).style.display = "none";
-
-    // show applied div
-    document.querySelector(`#applied-${id}`).style.display = "flex";
-  } else if (currentAppliedEvents.includes(id)) {
     // hide apply button on specific event
     document.querySelector(`#apply-btn-${id}`).style.display = "none";
 
