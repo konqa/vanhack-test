@@ -4,35 +4,40 @@ const events = [
     title: "MeetUp",
     date: "26 November 2020",
     description: "text text",
-    image: "",
+    image: "https://code-trials.s3.us-east-2.amazonaws.com/vh/meetup.jpg",
+    status: "free",
   },
   {
     id: 420,
     title: "Leap Recruiting Mission",
     date: "29 November 2020",
     description: "text text",
-    image: "",
+    image: "https://code-trials.s3.us-east-2.amazonaws.com/vh/meetup.jpg",
+    status: "free",
   },
   {
     id: 103,
     title: "VanHackathon",
     date: "2 December 2020",
     description: "text text",
-    image: "",
+    image: "https://code-trials.s3.us-east-2.amazonaws.com/vh/meetup.jpg",
+    status: "free",
   },
   {
     id: 201,
     title: "Premium-only Webinar",
     date: "6 December 2020",
     description: "text text",
-    image: "",
+    image: "https://code-trials.s3.us-east-2.amazonaws.com/vh/meetup.jpg",
+    status: "premium",
   },
   {
     id: 88,
     title: "Open Webinar",
     date: "15 December 2020",
     description: "text text",
-    image: "",
+    image: "https://code-trials.s3.us-east-2.amazonaws.com/vh/meetup.jpg",
+    status: "free",
   },
 ];
 
@@ -67,22 +72,25 @@ async function eventsData() {
 
   // add html to events-block page section
   document.querySelector(`#events-block`).innerHTML = html;
+  checkAppliedEvents();
 }
 
 eventsData();
 
-let currentAppliedEvents = localStorage.getItem("events_applied")
-  ? JSON.parse(localStorage.getItem("events_applied"))
-  : [];
+function checkAppliedEvents() {
+  let currentAppliedEvents = localStorage.getItem("events_applied")
+    ? JSON.parse(localStorage.getItem("events_applied"))
+    : [];
 
-currentAppliedEvents.map((id) => {
-  console.log(id);
-  // hide apply button on specific event
-  document.querySelector(`#apply-btn-${id}`).style.display = "none";
+  currentAppliedEvents.map((id) => {
+    console.log(id);
+    // hide apply button on specific event
+    document.querySelector(`#apply-btn-${id}`).style.display = "none";
 
-  // show applied div
-  document.querySelector(`#applied-${id}`).style.display = "flex";
-});
+    // show applied div
+    document.querySelector(`#applied-${id}`).style.display = "flex";
+  });
+}
 
 function apply(id) {
   // check events user has applied for
