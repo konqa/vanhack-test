@@ -3,40 +3,45 @@ const events = [
     id: 435,
     title: "MeetUp",
     date: "26 November 2020",
-    description: "text text",
-    image: "https://code-trials.s3.us-east-2.amazonaws.com/vh/meetup.jpg",
+    description:
+      "Since we have a limited seat number, we need to make a selection of people who apply. To know more about the people attending to match the vacancies better to the Recruiting Fair, you’ll need to create and fill out your VanHack Profile. You’ll receive further instructions on your email. So, Recife, let’s rock this Meetup?",
+    image: "https://code-trials.s3.us-east-2.amazonaws.com/vh/1.jpg",
     status: "free",
   },
   {
     id: 420,
     title: "Leap Recruiting Mission",
     date: "29 November 2020",
-    description: "text text",
-    image: "https://code-trials.s3.us-east-2.amazonaws.com/vh/meetup.jpg",
+    description:
+      "Select from 100+ Senior Developers to help fuel your growth. VanHack is bringing some of the best developers Africa who want to relocate for a weekend-long recruiting fair in Johannesburg.",
+    image: "https://code-trials.s3.us-east-2.amazonaws.com/vh/2.jpg",
     status: "free",
   },
   {
     id: 103,
     title: "VanHackathon",
     date: "2 December 2020",
-    description: "text text",
-    image: "https://code-trials.s3.us-east-2.amazonaws.com/vh/meetup.jpg",
+    description:
+      "The goal of the event is to connect you with Canadian companies that are open to hiring from abroad. We’re creating a virtual environment for you to connect with companies and impress them with your work ethic. Companies will share challenges that test the skills they are looking to hire for. There will be many skills companies are hiring for such as Frontend (React, Node, Angular), Backend and QA.",
+    image: "https://code-trials.s3.us-east-2.amazonaws.com/vh/3.jpg",
     status: "free",
   },
   {
     id: 201,
-    title: "Premium-only Webinar",
+    title: "Premium&#45;only Webinar",
     date: "6 December 2020",
-    description: "text text",
-    image: "https://code-trials.s3.us-east-2.amazonaws.com/vh/meetup.jpg",
+    description:
+      "Karan Dhani and Melissa Arrambide, immigration consultants at VanHack, will demystify the Canadian Work Visa Process. Do not miss it",
+    image: "https://code-trials.s3.us-east-2.amazonaws.com/vh/4.jpg",
     status: "premium",
   },
   {
     id: 88,
     title: "Open Webinar",
     date: "15 December 2020",
-    description: "text text",
-    image: "https://code-trials.s3.us-east-2.amazonaws.com/vh/meetup.jpg",
+    description:
+      "Webinar: How to get a Remote Job in Canada! Learn how you can start working in Canada before arriving in the maple country.",
+    image: "https://code-trials.s3.us-east-2.amazonaws.com/vh/5.jpg",
     status: "free",
   },
 ];
@@ -51,29 +56,36 @@ async function eventsData() {
       html = `${html} 
       <div class="event-card" style="background-image: url(${event.image}); background-size: cover">
         <div class="event-section-head">
-        <div class="event-title">${event.title}</div>
-<div class="event-status">
-      <button class="event-btn" onclick="apply(${event.id})" id="apply-btn-${event.id}">
-          Apply to attend
-      </button>
-      <div class="vh-applied" id="applied-${event.id}" style="display:none">Application sent</div>
-
-      </div>
-      </div>
-
-      <div class="event-section-footer"></div>
-        <div>
-          <div class="event-section-main">
-              
-              <div class="event-date">Date ${event.date}</div>
-              <div class="event-more">${event.description}</div>
+          <div class="event-title">${event.title}</div>
+          <div class="event-status">
+            <button class="event-btn" onclick="apply(${event.id})" id="apply-btn-${event.id}">
+              Apply to attend
+            </button>
+            <div id="applied-${event.id}" style="display: none">
+              Application sent
+            </div>
           </div>
-
         </div>
-      </div>`;
+
+        <div class="event-section-main">
+          <div class="event-date">${event.date}</div>
+          <div onclick="shareLink('${event.title}','${event.id}',)
+          "><img src="https://code-trials.s3.us-east-2.amazonaws.com/vh/twitter.svg" alt="Tweet" width="20" /></div>
+          <button class="event-btn read-more" onclick="read(${event.id})" id="read-more-btn-${event.id}">
+            More info
+          </button>
+        </div>
+          
+        <div class="event-section-footer" id="footer-${event.id}">
+          <div class="event-more" id="read-more-${event.id}" style="display: none">${event.description}</div>
+        <div>
+
+        </div>  
+      </div>
+    </div>`;
     });
   } else {
-    html = "<div>:) No VanHack events found</div>";
+    html = "<div>:( No VanHack events found</div>";
   }
 
   // add html to events-block page section
@@ -83,13 +95,45 @@ async function eventsData() {
 
 eventsData();
 
+function read(id) {
+  let element = document.querySelector(`#read-more-${id}`).style;
+  let btn = document.querySelector(`#read-more-btn-${id}`);
+  let footer = document.querySelector(`#footer-${id}`).style;
+
+  if (element.display === "none") {
+    // show specific event read more text
+    element.display = "flex";
+    // change text on button
+    btn.innerText = "Less info";
+    // make text backgrund dark blue
+    footer.backgroundColor = "#211c3f";
+  } else {
+    // hide specific event read more text
+    element.display = "none";
+    // change text on button
+    btn.innerText = "More info";
+    // make text backgrund dark transparent
+    footer.backgroundColor = "transparent";
+  }
+}
+
+function trimText(text, limit) {
+  return;
+}
+
+function shareLink(title, id) {
+  let newTitle = title.replace(/\s/g, "%20");
+  window.open(
+    `https://twitter.com/intent/tweet?url=https://vanhack.com/${id}&text=${newTitle}`
+  );
+}
+
 function checkAppliedEvents() {
   let currentAppliedEvents = localStorage.getItem("events_applied")
     ? JSON.parse(localStorage.getItem("events_applied"))
     : [];
 
   currentAppliedEvents.map((id) => {
-    console.log(id);
     // hide apply button on specific event
     document.querySelector(`#apply-btn-${id}`).style.display = "none";
 
