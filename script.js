@@ -53,7 +53,7 @@ async function eventsData() {
         <div class="event-section-head">
         <div class="event-title">${event.title}</div>
 <div class="event-status">
-      <button class="vh-btn" onclick="apply(${event.id})" id="apply-btn-${event.id}">
+      <button class="event-btn" onclick="apply(${event.id})" id="apply-btn-${event.id}">
           Apply to attend
       </button>
       <div class="vh-applied" id="applied-${event.id}" style="display:none">Application sent</div>
