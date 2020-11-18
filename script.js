@@ -49,19 +49,25 @@ async function eventsData() {
   if (events.length) {
     await events.map((event, index) => {
       html = `${html} 
-      <div class="event-card">
-        <div class="event-section-head"><img src="${event.title}" alt="Event image" /></div>
-        <div class="event-section-main">
-            <div class="event-title">${event.title}</div>
-            <div class="event-date">Date ${event.date}</div>
-            <div class="event-more">${event.description}</div>
-        </div>
-        <div class="event-section-footer">
+      <div class="event-card" style="background-image: url(${event.image}); background-size: cover">
+        <div class="event-section-head">
+        <div class="event-title">${event.title}</div>
+<div class="event-status">
+      <button class="vh-btn" onclick="apply(${event.id})" id="apply-btn-${event.id}">
+          Apply to attend
+      </button>
+      <div class="vh-applied" id="applied-${event.id}" style="display:none">Application sent</div>
 
-            <button class="vh-btn" onclick="apply(${event.id})" id="apply-btn-${event.id}">
-                Apply to attend
-            </button>
-            <div class="vh-applied" id="applied-${event.id}" style="display:none">Application sent</div>
+      </div>
+      </div>
+
+      <div class="event-section-footer"></div>
+        <div>
+          <div class="event-section-main">
+              
+              <div class="event-date">Date ${event.date}</div>
+              <div class="event-more">${event.description}</div>
+          </div>
 
         </div>
       </div>`;
