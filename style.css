@@ -21,7 +21,7 @@ body {
     position: relative;
     margin: 20px;
     border-radius: 10px;
-    border: 1px solid lightblue;
+    border: 1px solid white;
     height: 370px;
     min-width: 400px;
     max-width: 400px;
@@ -73,6 +73,18 @@ body {
 
 .event-more {
     padding: 20px;
+    flex-direction: column;
+}
+
+.premium-btn {
+    background-color: #ffffff;
+    color: #0F5295;
+    font-weight: 600;
+    font-size: 18px;
+    border: 1px solid #211C3F;
+    border-radius: 2px;
+    padding: 10px;
+    cursor: pointer;
 }
 
 .event-btn {

@@ -54,12 +54,18 @@ async function eventsData() {
   if (events.length) {
     await events.map((event, index) => {
       html = `${html} 
-      <div class="event-card" style="background-image: url(${event.image}); background-size: cover">
+      <div class="event-card" style="background-image: url(${
+        event.image
+      }); background-size: cover">
         <div class="event-section-head">
           <div class="event-title">${event.title}</div>
           <div class="event-status">
-            <button class="event-btn" onclick="apply(${event.id})" id="apply-btn-${event.id}">
-              Apply to attend
+            <button class="event-btn" onclick="apply('${event.id}','${
+        event.status
+      }')" id="apply-btn-${event.id}" style="border:${
+        event.status === "premium" ? "2px solid #FF9F00" : "1px solid #211C3F"
+      }">
+      ${event.status === "premium" ? "APPLY AS MEMBER" : "Apply to attend"}
             </button>
             <div id="applied-${event.id}" style="display: none">
               Application sent
@@ -69,16 +75,29 @@ async function eventsData() {
 
         <div class="event-section-main">
           <div class="event-date">${event.date}</div>
-          <div onclick="shareLink('${event.title}','${event.id}',)
+          <div style="cursor: pointer" onclick="shareLink('${event.title}','${
+        event.id
+      }',)
           "><img src="https://code-trials.s3.us-east-2.amazonaws.com/vh/twitter.svg" alt="Tweet" width="20" /></div>
-          <button class="event-btn read-more" onclick="read(${event.id})" id="read-more-btn-${event.id}">
+          <button class="event-btn read-more" onclick="read(${
+            event.id
+          })" id="read-more-btn-${event.id}">
             More info
           </button>
         </div>
           
         <div class="event-section-footer" id="footer-${event.id}">
-          <div class="event-more" id="read-more-${event.id}" style="display: none">${event.description}</div>
-        <div>
+          <div class="event-more" id="read-more-${
+            event.id
+          }" style="display: none">${event.description}
+        </div>
+
+          <div class="event-more" id="read-more-premium-${
+            event.id
+          }" style="display: none">
+          <button onclick=openUrl('https://vanhack.com/premium') class='premium-btn'>Buy a Membership Plan Now</button>
+          <p>Get exciting information that's not publicly available and access specific channels.</p>
+          </div>
 
         </div>  
       </div>
@@ -95,21 +114,31 @@ async function eventsData() {
 
 eventsData();
 
-function read(id) {
+function read(id, status) {
   let element = document.querySelector(`#read-more-${id}`).style;
+  let elementPremium = document.querySelector(`#read-more-premium-${id}`).style;
   let btn = document.querySelector(`#read-more-btn-${id}`);
   let footer = document.querySelector(`#footer-${id}`).style;
 
   if (element.display === "none") {
-    // show specific event read more text
-    element.display = "flex";
-    // change text on button
-    btn.innerText = "Less info";
-    // make text backgrund dark blue
-    footer.backgroundColor = "#211c3f";
+    if (status === "premium") {
+      footer.backgroundColor = "#ff9f00";
+      // show specific event read more text
+      elementPremium.display = "flex";
+      element.display = "none";
+    } else {
+      // show specific event read more text
+      element.display = "flex";
+      elementPremium.display = "none";
+      // change text on button
+      btn.innerText = "Less info";
+      // make text backgrund dark blue
+      footer.backgroundColor = "#211c3f";
+    }
   } else {
     // hide specific event read more text
     element.display = "none";
+    elementPremium.display = "none";
     // change text on button
     btn.innerText = "More info";
     // make text backgrund dark transparent
@@ -117,14 +146,14 @@ function read(id) {
   }
 }
 
-function trimText(text, limit) {
-  return;
+function openUrl(url) {
+  window.open(url);
 }
 
 function shareLink(title, id) {
-  let newTitle = title.replace(/\s/g, "%20");
-  window.open(
-    `https://twitter.com/intent/tweet?url=https://vanhack.com/${id}&text=${newTitle}`
+  // send fake url to twitter with event title and event id
+  openUrl(
+    `https://twitter.com/intent/tweet?url=https://vanhack.com/${id}&text=${title}`
   );
 }
 
@@ -142,7 +171,12 @@ function checkAppliedEvents() {
   });
 }
 
-function apply(id) {
+function apply(id, status) {
+  if (status === "premium") {
+    read(id, status);
+    return;
+  }
+
   // check events user has applied for
   let currentAppliedEvents = localStorage.getItem("events_applied")
     ? JSON.parse(localStorage.getItem("events_applied"))
