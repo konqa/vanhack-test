@@ -121,7 +121,10 @@ function read(id, status) {
   let footer = document.querySelector(`#footer-${id}`).style;
 
   if (element.display === "none") {
-    if (status === "premium") {
+    if (elementPremium.display === "flex") {
+      elementPremium.display = "none";
+      footer.backgroundColor = "transparent";
+    } else if (status === "premium") {
       footer.backgroundColor = "#ff9f00";
       // show specific event read more text
       elementPremium.display = "flex";
@@ -132,17 +135,21 @@ function read(id, status) {
       elementPremium.display = "none";
       // change text on button
       btn.innerText = "Less info";
-      // make text backgrund dark blue
+      // make text background dark blue
       footer.backgroundColor = "#211c3f";
     }
-  } else {
-    // hide specific event read more text
-    element.display = "none";
-    elementPremium.display = "none";
-    // change text on button
-    btn.innerText = "More info";
-    // make text backgrund dark transparent
-    footer.backgroundColor = "transparent";
+  } else if (element.display === "flex") {
+    if (status === "premium") {
+      footer.backgroundColor = "#ff9f00";
+      // show specific event read more text
+      elementPremium.display = "flex";
+      element.display = "none";
+    } else {
+      elementPremium.display = "none";
+      element.display = "none";
+      footer.backgroundColor = "transparent";
+      btn.innerText = "More info";
+    }
   }
 }
 
